@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import pickle
@@ -5,7 +6,7 @@ import json
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
 import logging
 
-# logging configuration
+# Logging configuration
 logger = logging.getLogger('model_evaluation')
 logger.setLevel('DEBUG')
 
@@ -75,6 +76,9 @@ def evaluate_model(clf, X_test: np.ndarray, y_test: np.ndarray) -> dict:
 def save_metrics(metrics: dict, file_path: str) -> None:
     """Save the evaluation metrics to a JSON file."""
     try:
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        
         with open(file_path, 'w') as file:
             json.dump(metrics, file, indent=4)
         logger.debug('Metrics saved to %s', file_path)
